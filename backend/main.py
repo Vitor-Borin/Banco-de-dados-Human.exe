@@ -25,14 +25,15 @@ origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "https://*.vercel.app",  # Permite qualquer subdomínio do Vercel
-    "https://banco-de-dados-human-exe-5l9x.vercel.app/",  # Substitua pelo URL real do seu frontend
+    "https://banco-de-dados-human-exe-5l9x.vercel.app",  # URL do frontend
+    "https://banco-de-dados-human-exe-519x.vercel.app",  # URL alternativa do frontend
 ]
 
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # <-- CORRIGIDO para maior segurança
-    allow_credentials=True,
+    allow_origins=["*"],  # Temporariamente permite todas as origens para debug
+    allow_credentials=False,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
