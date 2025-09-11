@@ -22,10 +22,13 @@ app = FastAPI(
 )
 
 # Defina as origens permitidas
-# A porta 5173 é a padrão para o Vite/React
+# A porta 5173 é a padrão para o Vite/React (desenvolvimento)
+# URLs do Vercel para produção
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "https://*.vercel.app",  # Permite qualquer subdomínio do Vercel
+    "https://your-frontend-app.vercel.app",  # Substitua pelo URL real do seu frontend
 ]
 
 # Add CORS middleware
