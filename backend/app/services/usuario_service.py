@@ -23,15 +23,15 @@ class UsuarioService:
                     detail="Este e-mail já está em uso."
                 )
 
-            # Validação de tamanho máximo do bcrypt (72 bytes)
-            if len(usuario.senha_usuario.encode('utf-8')) > 72:
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Senha muito longa. Use até 72 caracteres."
-                )
+            # Validação e fallback: limite do bcrypt é 72 bytes
+            password_bytes = usuario.senha_usuario.encode('utf-8')
+            if len(password_bytes) > 72:
+                # Trunca para 72 bytes para evitar falha do bcrypt
+                password_bytes = password_bytes[:72]
+            password_to_hash = password_bytes.decode('utf-8', 'ignore')
 
             # Hash password
-            hashed_password = self.auth_service.get_password_hash(usuario.senha_usuario)
+            hashed_password = self.auth_service.get_password_hash(password_to_hash)
             
             # Insert user
             query = """
@@ -58,10 +58,10 @@ class UsuarioService:
             raise http_exc # Re-lança a exceção para o FastAPI tratar
         except Exception as e:
             logger.error(f"Create user error: {e}")
-            # Lança uma exceção genérica para outros erros de banco de dados
+            # Durante depuração, retornamos o detalhe do erro para identificar a causa
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Ocorreu um erro interno ao criar o usuário."
+                detail=f"Ocorreu um erro interno ao criar o usuário: {e}"
             )
     
     def get_usuario_by_id(self, user_id: int) -> Optional[UsuarioResponse]:
