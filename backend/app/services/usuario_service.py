@@ -23,8 +23,16 @@ class UsuarioService:
                     detail="Este e-mail já está em uso."
                 )
 
+            # Normalização de senha
+            raw_password = str(usuario.senha_usuario or "")
+            # Remove caracteres de controle e espaços invisíveis comuns
+            cleaned_password = (
+                raw_password.replace('\u200b', '').replace('\u200c', '').replace('\u200d', '')
+                .replace('\ufeff', '').replace('\x00', '')
+            ).strip()
+
             # Validação e fallback: limite do bcrypt é 72 bytes
-            password_bytes = usuario.senha_usuario.encode('utf-8')
+            password_bytes = cleaned_password.encode('utf-8')
             if len(password_bytes) > 72:
                 # Trunca para 72 bytes para evitar falha do bcrypt
                 password_bytes = password_bytes[:72]
