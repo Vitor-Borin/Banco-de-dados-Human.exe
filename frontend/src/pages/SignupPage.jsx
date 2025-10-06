@@ -45,8 +45,6 @@ function SignupPage() {
       return;
     }
 
-    // Mantém validações originais, sem limite adicional
-
     if (password !== confirmPassword) {
       setError('As senhas não coincidem');
       setLoading(false);
@@ -73,7 +71,6 @@ function SignupPage() {
       }
     } catch (error) {
       console.error('Erro ao criar conta:', error);
-      // Repasse mensagens de validação do backend quando houver
       setError(error.message || 'Erro ao criar conta. Tente novamente.');
     } finally {
       setLoading(false);

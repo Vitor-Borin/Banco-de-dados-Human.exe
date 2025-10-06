@@ -25,8 +25,7 @@ origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "https://*.vercel.app",  # Permite qualquer subdomínio do Vercel
-    "https://banco-de-dados-human-exe-5l9x.vercel.app",  # URL do frontend
-    "https://banco-de-dados-human-exe-519x.vercel.app",  # URL alternativa do frontend
+    "https://banco-de-dados-human-exe-5l9x.vercel.app/"
 ]
 
 # Add CORS middleware
@@ -65,10 +64,14 @@ async def test_endpoint():
 # Global exception handler
 @app.exception_handler(Exception)
 async def global_exception_handler(request, exc):
+    # Não captura HTTPException para que o FastAPI possa lidar com elas
+    if isinstance(exc, HTTPException):
+        raise exc
+    
     logger.error(f"Global exception: {exc}", exc_info=True)
     return JSONResponse(
         status_code=500,
-        content={"detail": "Ocorreu um erro interno no servidor"}
+        content={"detail": f"Ocorreu um erro interno no servidor: {exc}"}
     )
 
 if __name__ == "__main__":

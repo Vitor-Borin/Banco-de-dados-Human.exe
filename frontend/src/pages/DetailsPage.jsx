@@ -77,27 +77,24 @@ function DetailsPage() {
           <div className="game-info-column">
             <div className="about-section">
               <h2 className="section-title">Sobre este jogo</h2>
-              <h3 className="subtitle">Ficção científica interativa sobre a resistência humana</h3>
+              <h3 className="subtitle">Salve o mundo de um destino caótico</h3>
               <p className="game-description">
-                HUMAN.EXE é uma experiência narrativa que mistura minigames, animações e
-                escolhas do jogador em um mundo cyberpunk onde a Inteligência Artificial
-                tomou o controle. Você acompanha cinco especialistas tentando reconquistar
-                a humanidade, enquanto progride por fases com trilha sonora imersiva e
-                momentos cinematográficos.
+                A IA dominou o mundo, e agora voce e seus amigos sao os ultimos pingos de esperanca que sobrou na terra. 
+                Seja forte nessa batalha e demote a IA em jogos com uma mistura de cyberpunk e emocao humana.
               </p>
             </div>
 
             <div className="features-section">
               <h2 className="section-title">Características do Jogo</h2>
               <ul className="features-list">
-                <li>Animações cinematográficas com GSAP e transições fluídas.</li>
-                <li>Trilha sonora e efeitos sonoros imersivos para cada fase.</li>
-                <li>Múltiplos minigames, um para cada especialista do time.</li>
-                <li>Sistema de chat entre personagens com interações dinâmicas.</li>
-                <li>Visual cyberpunk com identidade própria e interface responsiva.</li>
-                <li>Progressão por fases com desbloqueios e registro local de avanço.</li>
-                <li>Decisões críticas que impactam o desfecho da história.</li>
-                <li>Otimização para desktop e mobile, com suporte a toque.</li>
+                <li>Descubra um reino de insetos caídos, explorando cavernas musgosas, cidades douradas e pântanos.</li>
+                <li>Envolva-se em combate acrobático e letal com uma variedade de movimentos mortais.</li>
+                <li>Crie ferramentas poderosas e domine um arsenal de armas e armadilhas.</li>
+                <li>Resolva missões surpreendentes, cace bestas raras e desvende mistérios antigos.</li>
+                <li>Enfrente mais de 200 inimigos ferozes, incluindo bestas, caçadores, monstros e cavaleiros.</li>
+                <li>Elimine mais de 40 chefes lendários e lute contra reis caídos.</li>
+                <li>Desafie o modo "Steel Soul" após conquistar o reino.</li>
+                <li>Desfrute de uma trilha sonora instrumental de Christopher Larkin, com melodias melancólicas, cordas sinfônicas e percussão.</li>
               </ul>
             </div>
           </div>
@@ -143,42 +140,42 @@ function DetailsPage() {
                 <div className="review-item">
                   <div className="review-header">
                     <img src={likeSteam} alt="Like" className="review-thumbs" />
-                    <span className="reviewer">@ana.dev</span>
-                    <span className="review-time">2h</span>
+                    <span className="reviewer">@dianacitra</span>
+                    <span className="review-time">2.5h</span>
                   </div>
-                  <p className="review-text">As animações com GSAP deixaram tudo muito cinematográfico. Curti demais!</p>
+                  <p className="review-text">I loved it, incredibly!</p>
                 </div>
                 <div className="review-item">
                   <div className="review-header">
                     <img src={likeSteam} alt="Like" className="review-thumbs" />
-                    <span className="reviewer">@nicolas</span>
+                    <span className="reviewer">@deliger</span>
                     <span className="review-time">1h</span>
                   </div>
-                  <p className="review-text">A trilha sonora e o visual cyberpunk criam uma imersão absurda.</p>
+                  <p className="review-text">The game is perfect...</p>
                 </div>
                 <div className="review-item">
                   <div className="review-header">
-                    <img src={likeSteam} alt="Like" className="review-thumbs" />
-                    <span className="reviewer">@vborin</span>
+                    <img src={likeSteam} alt="Like" className="review-thumbs" />s
+                    <span className="reviewer">@doscazr</span>
                     <span className="review-time">1h</span>
                   </div>
-                  <p className="review-text">Gostei dos minigames de cada personagem e do sistema de chat.</p>
+                  <p className="review-text">One of the best experiences...</p>
                 </div>
                 <div className="review-item">
                   <div className="review-header">
                     <img src={likeSteam} alt="Like" className="review-thumbs" />
-                    <span className="reviewer">@winny</span>
-                    <span className="review-time">45m</span>
+                    <span className="reviewer">@qwrtyui</span>
+                    <span className="review-time">1h</span>
                   </div>
-                  <p className="review-text">Funciona bem no celular e as escolhas realmente mudam o final.</p>
+                  <p className="review-text">I liked it, I would just play</p>
                 </div>
                 <div className="review-item">
                   <div className="review-header">
                     <img src={likeSteam} alt="Like" className="review-thumbs" />
-                    <span className="reviewer">@yas</span>
-                    <span className="review-time">30m</span>
+                    <span className="reviewer">@enviaso</span>
+                    <span className="review-time">1h</span>
                   </div>
-                  <p className="review-text">Projeto redondinho. Recomendo para quem curte narrativa interativa.</p>
+                  <p className="review-text">The game was very well made, recommended!</p>
                 </div>
               </div>
             </div>

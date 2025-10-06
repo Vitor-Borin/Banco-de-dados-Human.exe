@@ -23,7 +23,7 @@ class UsuarioService:
                     detail="Este e-mail já está em uso."
                 )
 
-            # Hash password (sem normalizações adicionais)
+            # Hash password
             hashed_password = self.auth_service.get_password_hash(usuario.senha_usuario)
             
             # Insert user
