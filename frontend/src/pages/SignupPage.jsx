@@ -45,12 +45,7 @@ function SignupPage() {
       return;
     }
 
-    // Limite do bcrypt (72 bytes)
-    if (new TextEncoder().encode(password).length > 72) {
-      setError('Senha muito longa. Use até 72 caracteres.');
-      setLoading(false);
-      return;
-    }
+    // Mantém validações originais, sem limite adicional
 
     if (password !== confirmPassword) {
       setError('As senhas não coincidem');

@@ -8,12 +8,7 @@ from app.models.usuario import UsuarioLogin, UsuarioResponse
 logger = logging.getLogger(__name__)
 
 # Password hashing
-# Define bcrypt to não lançar erro ao ultrapassar 72 bytes; trunca silenciosamente
-pwd_context = CryptContext(
-    schemes=["bcrypt"],
-    deprecated="auto",
-    bcrypt__truncate_error=False
-)
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 class AuthService:
     def __init__(self):
