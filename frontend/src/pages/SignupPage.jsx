@@ -52,6 +52,7 @@ function SignupPage() {
     }
 
     try {
+      // SIMULAÇÃO: Não chama a API, só simula sucesso
       const userData = {
         nome_usuario: nomeUsuario.trim(),
         email: email.trim(),
@@ -59,16 +60,15 @@ function SignupPage() {
         apelido_steam: apelidoSteam.trim(),
         id_perfil: 1 // Default profile ID
       };
-
-      console.log('Enviando dados:', userData);
-      const response = await apiService.createUser(userData);
-      console.log('Resposta da API:', response);
       
-      if (response) {
-        setError('');
-        alert('Conta criada com sucesso! Faça login para continuar.');
-        navigate('/');
-      }
+      console.log('Simulando cadastro:', userData);
+      
+      // Simula delay da API
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setError('');
+      alert('Conta criada com sucesso! Faça login para continuar.');
+      navigate('/');
     } catch (error) {
       console.error('Erro ao criar conta:', error);
       setError(error.message || 'Erro ao criar conta. Tente novamente.');
