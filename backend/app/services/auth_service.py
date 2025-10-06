@@ -13,20 +13,41 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 class AuthService:
     def __init__(self):
         self.pwd_context = pwd_context
-    
+
     def verify_password(self, plain_password: str, hashed_password: str) -> bool:
-        """Verify a password against its hash"""
-        return self.pwd_context.verify(plain_password, hashed_password)
-    
+        """Verify a password against its hash, handling invalid formats or long inputs"""
+        try:
+            # Garante que a senha tenha no máximo 72 bytes (limite do bcrypt)
+            if plain_password:
+                plain_password = plain_password.strip()[:72]
+            else:
+                return False
+
+            # Verifica se o hash é válido (bcrypt começa com $2)
+            if not hashed_password or not str(hashed_password).startswith("$2"):
+                logger.warning(f"Hash de senha inválido detectado: {hashed_password[:20]}...")
+                return False
+
+            return self.pwd_context.verify(plain_password, hashed_password)
+
+        except Exception as e:
+            logger.error(f"Erro ao verificar senha: {e}")
+            return False
+
     def get_password_hash(self, password: str) -> str:
-        """Hash a password"""
-        return self.pwd_context.hash(password)
-    
+        """Hash a password safely"""
+        try:
+            if password:
+                password = password.strip()[:72]  # Limita comprimento antes de hashear
+            return self.pwd_context.hash(password)
+        except Exception as e:
+            logger.error(f"Erro ao gerar hash de senha: {e}")
+            raise
+
     def authenticate_user(self, email: str, password: str) -> Optional[UsuarioResponse]:
         """Authenticate user with email and password"""
         try:
             # Get user from database
-            # A ordem das colunas aqui é importante e deve ser consistente
             query = """
                 SELECT ID_USUARIO, NOME_USUARIO, EMAIL, SENHA_USUARIO, 
                        APELIDO_STEAM, DATA_CRIACAO, ULTIMO_LOGIN, ID_PERFIL
@@ -39,12 +60,8 @@ class AuthService:
                 return None
             
             user_data = result[0]
-            # Mapeamento de índices:
-            # 0: ID_USUARIO, 1: NOME_USUARIO, 2: EMAIL, 3: SENHA_USUARIO
-            # 4: APELIDO_STEAM, 5: DATA_CRIACAO, 6: ULTIMO_LOGIN, 7: ID_PERFIL
-            
             stored_password = user_data[3]
-            
+
             # Verify password
             if not self.verify_password(password, stored_password):
                 return None
@@ -65,7 +82,7 @@ class AuthService:
         except Exception as e:
             logger.error(f"Authentication error: {e}")
             return None
-    
+
     def update_last_login(self, user_id: int) -> bool:
         """Update user's last login timestamp"""
         try:

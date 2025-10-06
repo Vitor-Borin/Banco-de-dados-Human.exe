@@ -23,8 +23,9 @@ class UsuarioService:
                     detail="Este e-mail já está em uso."
                 )
 
-            # Hash password (sem normalizações adicionais)
-            hashed_password = self.auth_service.get_password_hash(usuario.senha_usuario)
+            # Hash password (corrigido para evitar erro de tamanho)
+            raw_password = usuario.senha_usuario.strip()[:72]
+            hashed_password = self.auth_service.get_password_hash(raw_password)
             
             # Insert user
             query = """
@@ -48,10 +49,9 @@ class UsuarioService:
             return self.get_usuario_by_email(usuario.email)
             
         except HTTPException as http_exc:
-            raise http_exc # Re-lança a exceção para o FastAPI tratar
+            raise http_exc
         except Exception as e:
             logger.error(f"Create user error: {e}")
-            # Lança uma exceção genérica para outros erros de banco de dados
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Ocorreu um erro interno ao criar o usuário."
@@ -72,15 +72,14 @@ class UsuarioService:
                 return None
             
             user_data = result[0]
-            # ORDEM CORRETA: 0, 1, 2, 3, 4 (DATA_CRIACAO), 5 (ID_PERFIL), 6 (ULTIMO_LOGIN)
             return UsuarioResponse(
                 id_usuario=user_data[0],
                 nome_usuario=user_data[1],
                 email=user_data[2],
                 apelido_steam=user_data[3],
                 data_criacao=user_data[4],
-                id_perfil=user_data[5],      # <-- CORRIGIDO
-                ultimo_login=user_data[6]    # <-- CORRIGIDO
+                id_perfil=user_data[5],
+                ultimo_login=user_data[6]
             )
             
         except Exception as e:
@@ -102,15 +101,14 @@ class UsuarioService:
                 return None
             
             user_data = result[0]
-            # ORDEM CORRETA: 0, 1, 2, 3, 4 (DATA_CRIACAO), 5 (ID_PERFIL), 6 (ULTIMO_LOGIN)
             return UsuarioResponse(
                 id_usuario=user_data[0],
                 nome_usuario=user_data[1],
                 email=user_data[2],
                 apelido_steam=user_data[3],
                 data_criacao=user_data[4],
-                id_perfil=user_data[5],      # <-- CORRIGIDO
-                ultimo_login=user_data[6]    # <-- CORRIGIDO
+                id_perfil=user_data[5],
+                ultimo_login=user_data[6]
             )
             
         except Exception as e:
@@ -130,15 +128,14 @@ class UsuarioService:
             
             usuarios = []
             for user_data in result:
-                # ORDEM CORRETA: 0, 1, 2, 3, 4 (DATA_CRIACAO), 5 (ID_PERFIL), 6 (ULTIMO_LOGIN)
                 usuarios.append(UsuarioResponse(
                     id_usuario=user_data[0],
                     nome_usuario=user_data[1],
                     email=user_data[2],
                     apelido_steam=user_data[3],
                     data_criacao=user_data[4],
-                    id_perfil=user_data[5],      # <-- CORRIGIDO
-                    ultimo_login=user_data[6]    # <-- CORRIGIDO
+                    id_perfil=user_data[5],
+                    ultimo_login=user_data[6]
                 ))
             
             return usuarios
@@ -162,7 +159,8 @@ class UsuarioService:
                 params["email"] = usuario_update.email
             
             if usuario_update.senha_usuario is not None:
-                hashed_password = self.auth_service.get_password_hash(usuario_update.senha_usuario)
+                raw_pass = usuario_update.senha_usuario.strip()[:72]
+                hashed_password = self.auth_service.get_password_hash(raw_pass)
                 update_fields.append("SENHA_USUARIO = :senha_usuario")
                 params["senha_usuario"] = hashed_password
             
@@ -196,7 +194,6 @@ class UsuarioService:
             query = "DELETE FROM CP01_2S_USUARIO WHERE ID_USUARIO = :id_usuario"
             result = db.execute_delete(query, {"id_usuario": user_id})
             return result > 0
-            
         except Exception as e:
             logger.error(f"Delete user error: {e}")
             return False
