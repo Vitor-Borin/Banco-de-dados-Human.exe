@@ -45,6 +45,13 @@ function SignupPage() {
       return;
     }
 
+    // Limite do bcrypt (72 bytes)
+    if (new TextEncoder().encode(password).length > 72) {
+      setError('Senha muito longa. Use até 72 caracteres.');
+      setLoading(false);
+      return;
+    }
+
     if (password !== confirmPassword) {
       setError('As senhas não coincidem');
       setLoading(false);
@@ -71,6 +78,7 @@ function SignupPage() {
       }
     } catch (error) {
       console.error('Erro ao criar conta:', error);
+      // Repasse mensagens de validação do backend quando houver
       setError(error.message || 'Erro ao criar conta. Tente novamente.');
     } finally {
       setLoading(false);

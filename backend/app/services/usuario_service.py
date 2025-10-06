@@ -23,6 +23,13 @@ class UsuarioService:
                     detail="Este e-mail já está em uso."
                 )
 
+            # Validação de tamanho máximo do bcrypt (72 bytes)
+            if len(usuario.senha_usuario.encode('utf-8')) > 72:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Senha muito longa. Use até 72 caracteres."
+                )
+
             # Hash password
             hashed_password = self.auth_service.get_password_hash(usuario.senha_usuario)
             
