@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import logging
@@ -65,14 +65,10 @@ async def test_endpoint():
 # Global exception handler
 @app.exception_handler(Exception)
 async def global_exception_handler(request, exc):
-    # Não captura HTTPException para que o FastAPI possa lidar com elas
-    if isinstance(exc, HTTPException):
-        raise exc
-    
     logger.error(f"Global exception: {exc}", exc_info=True)
     return JSONResponse(
         status_code=500,
-        content={"detail": f"Ocorreu um erro interno no servidor: {exc}"}
+        content={"detail": "Ocorreu um erro interno no servidor"}
     )
 
 if __name__ == "__main__":
