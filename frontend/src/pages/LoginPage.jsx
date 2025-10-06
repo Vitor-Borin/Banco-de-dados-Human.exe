@@ -18,12 +18,20 @@ function LoginPage() {
     setError('');
 
     try {
-      const response = await apiService.login(email, password);
-      if (response.success) {
-        navigate('/home');
-      } else {
-        setError(response.message || 'Erro ao fazer login');
-      }
+      // SIMULAÇÃO: Não chama a API, só simula login bem-sucedido
+      console.log('Simulando login:', { email, password });
+      
+      // Simula delay da API
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Simula usuário logado
+      apiService.setCurrentUser({
+        id: 1,
+        name: email.split('@')[0],
+        email: email
+      });
+      
+      navigate('/home');
     } catch (error) {
       setError(error.message || 'Erro ao fazer login');
     } finally {
