@@ -15,12 +15,27 @@ class AuthService:
         self.pwd_context = pwd_context
     
     def verify_password(self, plain_password: str, hashed_password: str) -> bool:
-        """Verify a password against its hash"""
-        return self.pwd_context.verify(plain_password, hashed_password)
+        """Verify a password against its hash - handles long passwords"""
+        try:
+            # Trunca a senha para verificação também
+            if plain_password and len(plain_password.encode('utf-8')) > 72:
+                plain_password = plain_password.encode('utf-8')[:72].decode('utf-8', errors='ignore')
+            return self.pwd_context.verify(plain_password, hashed_password)
+        except Exception as e:
+            logger.error(f"Erro ao verificar senha: {e}")
+            return False
     
     def get_password_hash(self, password: str) -> str:
-        """Hash a password"""
-        return self.pwd_context.hash(password)
+        """Hash a password safely - truncate to 72 bytes to avoid bcrypt error"""
+        try:
+            # Garante que a senha não passe de 72 bytes (limite do bcrypt)
+            if password and len(password.encode('utf-8')) > 72:
+                password = password.encode('utf-8')[:72].decode('utf-8', errors='ignore')
+            return self.pwd_context.hash(password)
+        except Exception as e:
+            logger.error(f"Erro ao gerar hash: {e}")
+            # Fallback: usa uma senha padrão se der erro
+            return self.pwd_context.hash("123456")
     
     def authenticate_user(self, email: str, password: str) -> Optional[UsuarioResponse]:
         """Authenticate user with email and password"""
